@@ -1,0 +1,9 @@
+/* Photocell Calibration for Basement
+   by Brian Schuster
+   11/21/14
+*/
+
+int photocellPin = 0;
+into photocellReading;
+int LEDpin = 11;
+
