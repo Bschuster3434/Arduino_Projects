@@ -1,0 +1,33 @@
+// Binary to Base 10 Number Converter
+// by Brian Schuster
+// 11/27/14
+
+
+#define B_DATA 5
+#define B_LATCH 7
+#define B_CLOCK 9
+#define N_DATA 6
+#define N_LATCH 8
+#define N_CLOCK 10
+#define B_0 13
+#define B_1 12
+#define B_2 11
+#define B_3 4
+#define B_4 3
+#define B_5 2
+#define B_6 1
+#define B_7 0
+
+void setup(){
+ pinMode(B_DATA, OUTPUT);
+ pinMode(B_LATCH, OUTPUT);
+ pinMode(B_CLOCK, OUTPUT);
+ pinMode(N_DATA, OUTPUT);
+ pinMode(N_LATCH, OUTPUT);
+ pinMode(N_CLOCK, OUTPUT);
+ 
+ pinMode(B_0, INPUT);
+ pinMode(B_0, INPUT);
+ pinMode(B_0, INPUT);
+ pinMode(B_0, INPUT);
+ }

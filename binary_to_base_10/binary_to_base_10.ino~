@@ -1,0 +1,63 @@
+// Binary to Base 10 Number Converter
+// by Brian Schuster
+// 11/27/14
+
+#define N_DATA 5
+#define N_LATCH 7
+#define N_CLOCK 9
+
+
+int speed = 150;
+int digits[] = {252, 96, 218, 242, 102, 182, 190, 224, 254, 246};
+
+void setup(){
+  pinMode(N_DATA, OUTPUT);
+  pinMode(N_LATCH, OUTPUT);
+  pinMode(N_CLOCK, OUTPUT);
+}
+
+void displayNumber(int n) {
+ //Controls the three number display as well as the binary output
+
+ if ( n < 10 ) {
+  digitalWrite(N_LATCH, LOW);
+  shiftOut(N_DATA, N_CLOCK, LSBFIRST, n);
+  shiftOut(N_DATA, N_CLOCK, LSBFIRST, digits[n]);
+  shiftOut(N_DATA, N_CLOCK, LSBFIRST, 0);
+  shiftOut(N_DATA, N_CLOCK, LSBFIRST, 0);
+  digitalWrite(N_LATCH, HIGH);
+ }
+ 
+ else if ( n  < 100) {
+  int digit_ones = n % 10;
+  int digit_tens = n / 10;
+  digitalWrite(N_LATCH, LOW);
+  shiftOut(N_DATA, N_CLOCK, LSBFIRST, n);
+  shiftOut(N_DATA, N_CLOCK, LSBFIRST, digits[digit_ones]);
+  shiftOut(N_DATA, N_CLOCK, LSBFIRST, digits[digit_tens]);
+  shiftOut(N_DATA, N_CLOCK, LSBFIRST, 0);
+  digitalWrite(N_LATCH, HIGH); 
+   
+ }
+ 
+ else {
+  int digit_ones = n % 10;
+  int digit_tens = (n % 100) / 10;
+  int digit_hundreds = n / 100;
+  digitalWrite(N_LATCH, LOW);
+  shiftOut(N_DATA, N_CLOCK, LSBFIRST, n);
+  shiftOut(N_DATA, N_CLOCK, LSBFIRST, digits[digit_ones]);
+  shiftOut(N_DATA, N_CLOCK, LSBFIRST, digits[digit_tens]);
+  shiftOut(N_DATA, N_CLOCK, LSBFIRST, digits[digit_hundreds]);
+  digitalWrite(N_LATCH, HIGH);   
+ }
+
+}
+
+void loop() {
+ int i;
+ for ( i = 0; i < 256; i++) {
+  displayNumber(i);
+  delay(speed);
+ }
+}
