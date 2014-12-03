@@ -1,3 +1,4 @@
+#include <DHT.h>
 #include <Wire.h>
 #include <LCD.h>
 #include <LiquidCrystal_I2C.h>
@@ -12,8 +13,11 @@
 #define D6_pin  6
 #define D7_pin  7
 #define temp A0
+#define DHTPIN A1
+#define DHTTYPE DHT11 
 
 LiquidCrystal_I2C	lcd(I2C_ADDR,En_pin,Rw_pin,Rs_pin,D4_pin,D5_pin,D6_pin,D7_pin);
+DHT dht(DHTPIN, DHTTYPE);
 
 float sensor;
 float voltage;
@@ -26,18 +30,18 @@ lcd.setBacklightPin(BACKLIGHT_PIN,POSITIVE);
 lcd.setBacklight(HIGH);
 lcd.home (); // go home
 
- lcd.print("TEMPERATURE (F):");  
+ lcd.print("TMP36 | DHT11");  
+ dht.begin();
 }
 
-float multiRead(int n){
+float tmp36Read(int n){
  float totalReadings = 0;
  for (int i = 0; i < n; i ++) {
-  sensor = analogRead(0);
+  sensor = analogRead(temp);
   voltage = (sensor*5000)/1024;
   voltage = voltage - 500;
   f_temp = voltage/10 * 1.8 + 32;
   totalReadings = totalReadings + f_temp;
-  delay(50);
  } 
  
  float finalReading = totalReadings / n;
@@ -48,10 +52,17 @@ float multiRead(int n){
 
 void loop()
 {
- float f_temp = multiRead(100);
+ float tmp_temp = tmp36Read(1000);
+ float dht_temp = dht.readTemperature(true);
  
  lcd.setCursor(0,1);
- lcd.print(f_temp); 
+ lcd.print(tmp_temp); 
+ lcd.setCursor(6,1);
+ lcd.print("|");
  
+ lcd.setCursor(8,1);
+ lcd.print(dht_temp);
+ 
+ delay(3000);
  
 }
